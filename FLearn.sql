@@ -77,9 +77,11 @@ CREATE TABLE Nodes (
     NodeType        TINYINT             NOT NULL    DEFAULT 0,
     UnlockAt        DATETIME            NULL,
     IsActive        BIT                 NOT NULL    DEFAULT 1,
+    PrerequisiteNodeID INT              NULL,
 
     CONSTRAINT PK_Nodes             PRIMARY KEY (NodeID),
     CONSTRAINT FK_Nodes_Class       FOREIGN KEY (ClassID) REFERENCES Classes(ClassID),
+    CONSTRAINT FK_Nodes_Prerequisite FOREIGN KEY (PrerequisiteNodeID) REFERENCES Nodes(NodeID),
     CONSTRAINT CK_Nodes_Type        CHECK (NodeType IN (0, 1, 2))
 );
 GO
@@ -163,6 +165,8 @@ CREATE TABLE StudentAnswers (
     SelectedAnswerID    INT                 NULL,
     EssayText           NVARCHAR(MAX)       NULL,
     IsCorrect           BIT                 NOT NULL    DEFAULT 0,
+    Score               DECIMAL(5,2)        NULL,
+    TeacherFeedback     NVARCHAR(MAX)       NULL,
     Context             TINYINT             NOT NULL    DEFAULT 0,
     SessionID           INT                 NULL,
     CreatedAt           DATETIME            NOT NULL    DEFAULT GETDATE(),
@@ -185,6 +189,10 @@ CREATE TABLE MilestoneAssignments (
     StudentID       INT                 NOT NULL,
     Role            TINYINT             NOT NULL    DEFAULT 0,
     IsCompleted     BIT                 NOT NULL    DEFAULT 0,
+    SubmissionURL   VARCHAR(500)        NULL,
+    SubmissionText  NVARCHAR(MAX)       NULL,
+    Score           DECIMAL(5,2)        NULL,
+    Feedback        NVARCHAR(MAX)       NULL,
     UpdatedAt       DATETIME            NOT NULL    DEFAULT GETDATE(),
 
     CONSTRAINT PK_MilestoneAssignments      PRIMARY KEY (ID),
@@ -207,6 +215,23 @@ CREATE TABLE SurveyResponses (
     CONSTRAINT UQ_SurveyResponse        UNIQUE (StudentID, QuestionID),
     CONSTRAINT FK_SR_Student            FOREIGN KEY (StudentID) REFERENCES Users(UserID),
     CONSTRAINT FK_SR_Question           FOREIGN KEY (QuestionID) REFERENCES Questions(QuestionID)
+);
+GO
+
+-- 12. STUDENTQUESTIONS
+CREATE TABLE StudentQuestions (
+    QuestionID      INT IDENTITY(1,1)   NOT NULL,
+    ClassID         INT                 NOT NULL,
+    StudentID       INT                 NOT NULL,
+    TopicTitle      NVARCHAR(200)       NOT NULL,
+    Description     NVARCHAR(MAX)       NULL,
+    Upvotes         INT                 NOT NULL    DEFAULT 0,
+    IsResolved      BIT                 NOT NULL    DEFAULT 0,
+    CreatedAt       DATETIME            NOT NULL    DEFAULT GETDATE(),
+
+    CONSTRAINT PK_StudentQuestions          PRIMARY KEY (QuestionID),
+    CONSTRAINT FK_SQ_Class                  FOREIGN KEY (ClassID) REFERENCES Classes(ClassID),
+    CONSTRAINT FK_SQ_Student                FOREIGN KEY (StudentID) REFERENCES Users(UserID)
 );
 GO
 

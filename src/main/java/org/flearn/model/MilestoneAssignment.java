@@ -34,6 +34,18 @@ public class MilestoneAssignment {
     @Column(name = "IsCompleted", nullable = false)
     private boolean isCompleted;
 
+    @Column(name = "SubmissionURL", length = 500)
+    private String submissionUrl;
+
+    @Column(name = "SubmissionText", columnDefinition = "NVARCHAR(MAX)")
+    private String submissionText;
+
+    @Column(name = "Score")
+    private Double score;
+
+    @Column(name = "Feedback", columnDefinition = "NVARCHAR(MAX)")
+    private String feedback;
+
     @Column(name = "UpdatedAt", nullable = false)
     private LocalDateTime updatedAt;
 

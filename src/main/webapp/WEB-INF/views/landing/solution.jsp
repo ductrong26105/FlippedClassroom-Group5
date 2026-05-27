@@ -157,7 +157,7 @@
                         <div class="tab-pane fade ${st.first ? 'show active' : ''}"
                              id="content-${file.id}" role="tabpanel">
                             <div class="file-path">// Path: ${file.path}</div>
-                            <pre><code class="language-${file.lang}">${file.code}</code></pre>
+                            <pre><code class="language-${file.lang}"><c:out value="${file.code}"/></code></pre>
                         </div>
                     </c:forEach>
                 </div>

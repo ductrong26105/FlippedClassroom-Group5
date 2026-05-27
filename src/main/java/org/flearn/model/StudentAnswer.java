@@ -34,6 +34,12 @@ public class StudentAnswer {
     @Column(name = "IsCorrect", nullable = false)
     private boolean isCorrect;
 
+    @Column(name = "Score")
+    private Double score;
+
+    @Column(name = "TeacherFeedback", columnDefinition = "NVARCHAR(MAX)")
+    private String teacherFeedback;
+
     /**
      * 0 = Self-paced, 1 = Live session
      */

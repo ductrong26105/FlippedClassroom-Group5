@@ -40,6 +40,10 @@ public class Node {
     @Column(name = "IsActive", nullable = false)
     private boolean isActive;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PrerequisiteNodeID")
+    private Node prerequisiteNode;
+
     @PrePersist
     protected void onCreate() {
         isActive = true;

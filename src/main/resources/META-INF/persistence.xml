@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+             https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd"
+             version="3.1">
+
+    <persistence-unit name="flearn-persistence-unit">
+
+        <!-- Entity classes -->
+        <class>org.flearn.model.User</class>
+        <class>org.flearn.model.ClassRoom</class>
+        <class>org.flearn.model.ClassMember</class>
+        <class>org.flearn.model.Node</class>
+        <class>org.flearn.model.Question</class>
+        <class>org.flearn.model.Answer</class>
+        <class>org.flearn.model.LiveSession</class>
+        <class>org.flearn.model.StudentProgress</class>
+        <class>org.flearn.model.StudentAnswer</class>
+        <class>org.flearn.model.MilestoneAssignment</class>
+        <class>org.flearn.model.SurveyResponse</class>
+
+        <properties>
+
+            <!-- SQL Server Driver -->
+            <property name="jakarta.persistence.jdbc.driver"
+                      value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+
+            <!-- Database URL -->
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:sqlserver://localhost:1433;
+                             databaseName=FLearnDB;
+                             encrypt=true;
+                             trustServerCertificate=true"/>
+
+            <!-- Username -->
+            <property name="jakarta.persistence.jdbc.user"
+                      value="sa"/>
+
+            <!-- Password -->
+            <property name="jakarta.persistence.jdbc.password"
+                      value="123"/>
+
+            <!-- Hibernate Dialect -->
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.SQLServerDialect"/>
+
+            <!-- Show SQL -->
+            <property name="hibernate.show_sql"
+                      value="true"/>
+
+            <!-- Auto create/update table -->
+            <property name="hibernate.hbm2ddl.auto"
+                      value="update"/>
+
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

@@ -42,8 +42,13 @@
         </c:if>
 
         <!-- Error message -->
+        <div class="alert-error" id="clientErrorBox" style="display:none; margin-bottom: 1.25rem;">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="clientErrorMsg"></span>
+        </div>
+
         <c:if test="${not empty errorMessage}">
-            <div class="alert-error">
+            <div class="alert-error" style="margin-bottom: 1.25rem;">
                 <i class="fas fa-exclamation-circle"></i>
                 ${errorMessage}
             </div>
@@ -145,8 +150,22 @@ function togglePwd() {
     }
 }
 
-// Loading state on submit
-document.getElementById('loginForm').addEventListener('submit', function() {
+// Client-side Validation & Loading state on submit
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    const errorBox = document.getElementById('clientErrorBox');
+    const errorMsg = document.getElementById('clientErrorMsg');
+    errorBox.style.display = 'none';
+
+    const username = document.getElementById('username').value.trim();
+    const pwd = document.getElementById('password').value;
+
+    if (!username || !pwd) {
+        e.preventDefault();
+        errorMsg.textContent = 'Vui lòng điền đầy đủ tên đăng nhập và mật khẩu!';
+        errorBox.style.display = 'block';
+        return;
+    }
+
     const btn = document.getElementById('loginBtn');
     btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Đang đăng nhập...';
     btn.disabled = true;

@@ -149,7 +149,7 @@
                     <c:when test="${not empty courses}">
                         <c:forEach var="course" items="${courses}" end="3">
                             <div class="col-lg-3 col-md-6">
-                                <div class="course-card" onclick="location.href='${pageContext.request.contextPath}/courses/${course.classId}'">
+                                <div class="course-card" onclick="location.href='${pageContext.request.contextPath}/learn/${course.classId}'">
                                     <div class="card-thumb">
                                         <div style="width:100%;height:100%;background:linear-gradient(135deg,#1e3a5f,#0f1f3a);display:flex;align-items:center;justify-content:center;">
                                             <i class="fas fa-play-circle" style="font-size:3rem;color:rgba(255,255,255,.2);"></i>

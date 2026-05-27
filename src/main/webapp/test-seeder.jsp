@@ -43,7 +43,7 @@
                     adminUser = admins.get(0);
                 } else {
                     adminUser = User.builder()
-                            .username("admin_test")
+                            .username("admin_test   ")
                             .passwordHash(PasswordUtil.hashPassword("admin123"))
                             .fullName("Quản trị viên Hệ thống")
                             .email("admin@flearn.edu.vn")

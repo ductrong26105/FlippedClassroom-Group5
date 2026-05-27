@@ -21,6 +21,19 @@
         <a href="${pageContext.request.contextPath}/landing" class="btn-primary-fl" style="text-decoration:none;font-size:1rem;padding:.85rem 2rem;">
             <i class="fas fa-home me-2"></i>Về trang chủ
         </a>
+        <div style="text-align:left; background:#1e1e1e; color:#ff5555; padding:10px; overflow:auto; max-height:400px; font-size:12px; margin-top:20px; border-radius:5px; width:100%;">
+            <strong>Error Details for Debugging:</strong><br/>
+            <% 
+                if (exception != null) { 
+                    exception.printStackTrace(new java.io.PrintWriter(out)); 
+                    try {
+                        exception.printStackTrace(new java.io.PrintStream(new java.io.FileOutputStream("d:/Downloads/FLEARN-main/error_jsp_log.txt", true)));
+                    } catch(Exception ex) {}
+                } else {
+                    out.print("No exception object available in JSP.");
+                }
+            %>
+        </div>
     </div>
 </div>
 <script src="${pageContext.request.contextPath}/assets/js/main.js"></script>

@@ -276,7 +276,7 @@ let liveStart = null;
 
 function startLiveSession() {
     const ctx = (typeof TEACHER_CONFIG !== 'undefined') ? TEACHER_CONFIG.contextPath : '';
-    fetch(ctx + '/teacher/live/start', { method: 'POST' })
+    fetch(ctx + '/api/live/start', { method: 'POST' })
         .then(r => r.json())
         .then(data => {
             document.getElementById('liveStatusPanel').style.display = 'none';

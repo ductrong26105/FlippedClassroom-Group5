@@ -142,14 +142,21 @@
             <c:choose>
                 <c:when test="${not empty nodes}">
                     <c:forEach var="node" items="${nodes}" varStatus="st">
-                        <div class="syllabus-item"
+                        <c:set var="isLocked" value="${lockedNodeIds.contains(node.nodeId)}" />
+                        <c:set var="isCompleted" value="${completedNodeIds.contains(node.nodeId)}" />
+                        <c:set var="onClickAction" value="selectLesson(this)" />
+                        <c:if test="${isLocked}">
+                            <c:set var="onClickAction" value="showToast('warning', 'Đã khóa', 'Bạn cần hoàn thành bài học trước đó!')" />
+                        </c:if>
+                        <div class="syllabus-item ${isLocked ? 'locked' : ''} ${isCompleted ? 'completed' : ''}"
                              id="sitem-${node.nodeId}"
                              data-nodeid="${node.nodeId}"
-                             data-video="${node.videoUrl}"
+                             data-video="${isLocked ? '' : node.videoUrl}"
                              data-title="${node.title}"
                              data-type="${node.nodeType}"
                              data-order="${node.orderIndex}"
-                             onclick="selectLesson(this)">
+                             data-locked="${isLocked}"
+                             onclick="${onClickAction}">
                             <div class="item-icon
                                 <c:choose>
                                     <c:when test='${node.nodeType == 0}'>video</c:when>
@@ -163,8 +170,11 @@
                                 </c:choose>
                             </div>
                             <div class="item-title">${node.title}</div>
-                            <div id="sitem-status-${node.nodeId}">
-                                <!-- Status icon injected by JS -->
+                            <div id="sitem-status-${node.nodeId}" style="margin-left: auto; color: var(--text-muted); font-size: .85rem;">
+                                <c:choose>
+                                    <c:when test="${isLocked}"><i class="fas fa-lock"></i></c:when>
+                                    <c:when test="${isCompleted}"><i class="fas fa-check-circle" style="color:var(--success);"></i></c:when>
+                                </c:choose>
                             </div>
                         </div>
                     </c:forEach>

@@ -23,7 +23,7 @@
                     
                     <!-- Avatar circle with custom gradient -->
                     <div class="profile-avatar-circle mx-auto mb-3">
-                        <c:out value="${user.fullName.substring(0,1).toUpperCase()}"/>
+                        <c:out value="${not empty user.fullName ? user.fullName.substring(0,1).toUpperCase() : 'U'}"/>
                     </div>
                     
                     <!-- Name & Email -->

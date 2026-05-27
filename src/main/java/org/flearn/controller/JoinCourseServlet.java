@@ -75,6 +75,18 @@ public class JoinCourseServlet extends HttpServlet {
             return;
         }
 
+        // Business Rule: Check if class is active
+        if (!targetClass.isActive()) {
+            response.sendRedirect(request.getContextPath() + "/courses?error=class_inactive");
+            return;
+        }
+
+        // Business Rule: Check if user is already a member
+        if (classDAO.isMember(targetClass.getClassId(), loggedInUser.getUserId())) {
+            response.sendRedirect(request.getContextPath() + "/courses?error=already_joined");
+            return;
+        }
+
         // Save the membership in database if not already a member
         classDAO.addMember(targetClass, loggedInUser);
 

@@ -12,7 +12,7 @@
     <div class="user-sidebar-dropdown" id="userDropdown">
         <div style="padding:.5rem 1rem .75rem; border-bottom:1px solid var(--border); margin-bottom:.4rem;">
             <div style="font-weight:700; font-size:.9rem; color:var(--text-primary);">
-                <%= currentUser.getFullName() %>
+                <%= currentUser.getFullName() != null && !currentUser.getFullName().isEmpty() ? currentUser.getFullName() : currentUser.getUsername() %>
             </div>
             <div style="font-size:.78rem; color:var(--text-muted); margin-top:.15rem;">
                 <%= currentUser.getEmail() %>
@@ -61,10 +61,10 @@
     <!-- Mini card trigger -->
     <div class="user-mini-card" id="userMiniCard" onclick="toggleUserDropdown()">
         <div class="avatar">
-            <%= currentUser.getFullName().substring(0,1).toUpperCase() %>
+            <%= currentUser.getFullName() != null && !currentUser.getFullName().isEmpty() ? currentUser.getFullName().substring(0,1).toUpperCase() : "U" %>
         </div>
         <div class="user-info">
-            <div class="user-name"><%= currentUser.getFullName() %></div>
+            <div class="user-name"><%= currentUser.getFullName() != null && !currentUser.getFullName().isEmpty() ? currentUser.getFullName() : currentUser.getUsername() %></div>
             <div class="user-role">
                 <%
                     String roleLabel = "Học viên";

@@ -50,7 +50,7 @@
                             <div class="col-lg-3 col-md-4 col-sm-6 course-col">
                                 <div class="course-card h-100"
                                      data-name="${course.className}"
-                                     onclick="location.href='${pageContext.request.contextPath}/courses/${course.classId}'">
+                                     onclick="location.href='${pageContext.request.contextPath}/learn/${course.classId}'">
                                     <div class="card-thumb">
                                         <div style="width:100%;height:160px;background:linear-gradient(135deg,#1e3a5f,#0f1f3a);display:flex;align-items:center;justify-content:center;position:relative;">
                                             <i class="fas fa-play-circle" style="font-size:3.5rem;color:rgba(255,255,255,.15);"></i>

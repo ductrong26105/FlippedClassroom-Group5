@@ -10,11 +10,15 @@ import org.flearn.dao.ClassDAO;
 import org.flearn.dao.NodeDAO;
 import org.flearn.model.ClassRoom;
 import org.flearn.model.Node;
+import org.flearn.model.StudentProgress;
 import org.flearn.model.User;
 import org.flearn.util.AppConstants;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Handles the Learning Workspace page for a specific class.
@@ -27,6 +31,7 @@ public class LearnServlet extends HttpServlet {
 
     private final ClassDAO classDAO = new ClassDAO();
     private final NodeDAO  nodeDAO  = new NodeDAO();
+    private final org.flearn.dao.StudentProgressDAO progressDAO = new org.flearn.dao.StudentProgressDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -68,9 +73,30 @@ public class LearnServlet extends HttpServlet {
         // ── Load Nodes (ordered by OrderIndex) ─────────────────────────
         List<Node> nodes = nodeDAO.findByClass(classId);
 
+        // ── Load Student Progress ──────────────────────────────────────
+        List<StudentProgress> progresses = progressDAO.findByStudentAndClass(loggedInUser.getUserId(), classId);
+        Set<Integer> completedNodeIds = progresses.stream()
+                .filter(StudentProgress::isCompleted)
+                .map(p -> p.getNode().getNodeId())
+                .collect(Collectors.toSet());
+
+        Set<Integer> lockedNodeIds = new HashSet<>();
+        for (Node node : nodes) {
+            if (node.getPrerequisiteNode() != null) {
+                if (!completedNodeIds.contains(node.getPrerequisiteNode().getNodeId())) {
+                    lockedNodeIds.add(node.getNodeId());
+                }
+            }
+        }
+        
+        int totalBonus = progresses.stream().mapToInt(StudentProgress::getTotalBonus).sum();
+
         // ── Set attributes ─────────────────────────────────────────────
         request.setAttribute("classRoom",  classRoom);
         request.setAttribute("nodes",      nodes);
+        request.setAttribute("completedNodeIds", completedNodeIds);
+        request.setAttribute("lockedNodeIds", lockedNodeIds);
+        request.setAttribute("totalBonus", totalBonus);
         request.setAttribute("pageTitle",  classRoom.getClassName() + " - FLearn");
         request.setAttribute("activePage", "courses");
 

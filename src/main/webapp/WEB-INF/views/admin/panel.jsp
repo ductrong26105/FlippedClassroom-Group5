@@ -139,7 +139,7 @@
                                             <td style="color:var(--text-muted);font-size:.8rem;">#${u.userId}</td>
                                             <td>
                                                 <div style="display:flex;align-items:center;gap:.75rem;">
-                                                    <div class="avatar-sm">${u.fullName.substring(0,1).toUpperCase()}</div>
+                                                    <div class="avatar-sm">${not empty u.fullName ? u.fullName.substring(0,1).toUpperCase() : 'U'}</div>
                                                     <div>
                                                         <div style="font-weight:600;color:var(--text-primary);font-size:.88rem;">${u.fullName}</div>
                                                         <div style="font-size:.75rem;color:var(--text-muted);">@${u.username}</div>
@@ -158,9 +158,9 @@
                                             </td>
                                             <td>
                                                 <div class="status-toggle" onclick="toggleUserStatus(${u.userId}, this)">
-                                                    <div class="toggle-switch ${u.isActive ? 'on' : ''}" id="toggle-${u.userId}"></div>
+                                                    <div class="toggle-switch ${u.active ? 'on' : ''}" id="toggle-${u.userId}"></div>
                                                     <span style="font-size:.8rem;color:var(--text-secondary);" id="toggle-label-${u.userId}">
-                                                        ${u.isActive ? 'Hoạt động' : 'Đã khóa'}
+                                                        ${u.active ? 'Hoạt động' : 'Đã khóa'}
                                                     </span>
                                                 </div>
                                             </td>
@@ -211,7 +211,7 @@
                         <c:forEach var="cls" items="${allClasses}">
                             <tr>
                                 <td style="font-weight:600;color:var(--text-primary);">${cls.className}</td>
-                                <td>${cls.teacher.fullName}</td>
+                                <td>${not empty cls.teacher and not empty cls.teacher.fullName ? cls.teacher.fullName : 'N/A'}</td>
                                 <td><span class="invite-code-box" style="font-size:.78rem;padding:.2rem .5rem;letter-spacing:2px;">${cls.inviteCode}</span></td>
                                 <td>
                                     <span style="background:rgba(16,185,129,.1);color:var(--success);padding:.2rem .65rem;border-radius:50px;font-size:.75rem;font-weight:700;">

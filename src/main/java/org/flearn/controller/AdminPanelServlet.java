@@ -32,40 +32,48 @@ public class AdminPanelServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // ── Auth guard: must be Admin ──────────────────────────────────
-        HttpSession session = request.getSession(false);
-        User loggedInUser = (session != null)
-                ? (User) session.getAttribute(AppConstants.SESSION_USER)
-                : null;
+        try {
+            // ── Auth guard: must be Admin ──────────────────────────────────
+            HttpSession session = request.getSession(false);
+            User loggedInUser = (session != null)
+                    ? (User) session.getAttribute(AppConstants.SESSION_USER)
+                    : null;
 
-        if (loggedInUser == null || loggedInUser.getRole() != AppConstants.ROLE_ADMIN) {
-            response.sendRedirect(request.getContextPath() + "/login");
-            return;
+            if (loggedInUser == null || loggedInUser.getRole() != AppConstants.ROLE_ADMIN) {
+                response.sendRedirect(request.getContextPath() + "/login");
+                return;
+            }
+
+            // ── Load all users ─────────────────────────────────────────────
+            List<User> users = userDAO.findAll();
+
+            long totalAdmins   = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_ADMIN).count();
+            long totalTeachers = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_TEACHER).count();
+            long totalStudents = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_STUDENT).count();
+
+            // ── Load all classes ───────────────────────────────────────────
+            List<ClassRoom> allClasses = classDAO.findAll();
+
+            // ── Set attributes ─────────────────────────────────────────────
+            request.setAttribute("users",          users);
+            request.setAttribute("allClasses",     allClasses);
+            request.setAttribute("totalUsers",     users.size());
+            request.setAttribute("totalAdmins",    totalAdmins);
+            request.setAttribute("totalTeachers",  totalTeachers);
+            request.setAttribute("totalStudents",  totalStudents);
+            request.setAttribute("totalClasses",   allClasses.size());
+
+            request.setAttribute("pageTitle",      "Admin Panel - FLearn");
+            request.setAttribute("activePage",     "admin");
+
+            request.getRequestDispatcher(AppConstants.VIEW_ADMIN_PANEL)
+                   .forward(request, response);
+        } catch (Exception e) {
+            try {
+                e.printStackTrace(new java.io.PrintStream(new java.io.FileOutputStream("d:/Downloads/FLEARN-main/error_log.txt", true)));
+            } catch (Exception ex) {}
+            throw new ServletException(e);
         }
 
-        // ── Load all users ─────────────────────────────────────────────
-        List<User> users = userDAO.findAll();
-
-        long totalAdmins   = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_ADMIN).count();
-        long totalTeachers = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_TEACHER).count();
-        long totalStudents = users.stream().filter(u -> u.getRole() == AppConstants.ROLE_STUDENT).count();
-
-        // ── Load all classes ───────────────────────────────────────────
-        List<ClassRoom> allClasses = classDAO.findAll();
-
-        // ── Set attributes ─────────────────────────────────────────────
-        request.setAttribute("users",          users);
-        request.setAttribute("allClasses",     allClasses);
-        request.setAttribute("totalUsers",     users.size());
-        request.setAttribute("totalAdmins",    totalAdmins);
-        request.setAttribute("totalTeachers",  totalTeachers);
-        request.setAttribute("totalStudents",  totalStudents);
-        request.setAttribute("totalClasses",   allClasses.size());
-
-        request.setAttribute("pageTitle",      "Admin Panel - FLearn");
-        request.setAttribute("activePage",     "admin");
-
-        request.getRequestDispatcher(AppConstants.VIEW_ADMIN_PANEL)
-               .forward(request, response);
     }
 }
